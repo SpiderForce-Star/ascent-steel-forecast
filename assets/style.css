@@ -1,0 +1,718 @@
+/* Ascent Building Systems — Steel Forecast Dashboard */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Header brand bar */
+.ascent-hero {
+  background: linear-gradient(135deg, #0F2C44 0%, #1B4F72 45%, #2E86AB 100%);
+  border-radius: 14px;
+  padding: 1.1rem 1.5rem;
+  margin-bottom: 1rem;
+  color: #F5F8FB;
+  box-shadow: 0 8px 24px rgba(15, 44, 68, 0.28);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.ascent-hero-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.ascent-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex: 1;
+  min-width: 260px;
+}
+.ascent-logo {
+  height: 72px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.96);
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  flex-shrink: 0;
+}
+.ascent-logo-fallback {
+  height: 64px;
+  min-width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 0.4rem 0.7rem;
+}
+.ascent-hero-text {
+  min-width: 0;
+}
+.ascent-hero h1 {
+  margin: 0.25rem 0 0 0;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFFFFF !important;
+}
+.ascent-hero .subtitle {
+  margin: 0.35rem 0 0 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  color: #D6E6F2 !important;
+}
+.ascent-hero .meta {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ascent-hero-right {
+  text-align: right;
+  min-width: 140px;
+}
+.ascent-mono {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.92;
+}
+.ascent-date {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  margin-top: 0.35rem;
+}
+.ascent-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #F5F8FB;
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Intro splash (6s logo spin) — video fades via CSS after ~5.2s */
+.splash-header-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.5rem 0 1rem 0;
+  animation: splashFadeOut 0.9s ease-in 5.2s forwards;
+}
+.splash-logo {
+  height: 56px;
+  width: auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.35rem 0.5rem;
+  object-fit: contain;
+}
+.splash-fallback {
+  color: #E8EEF4;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 3rem;
+}
+.splash-caption {
+  color: #D6E6F2;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  opacity: 0.9;
+  text-align: center;
+}
+@keyframes splashFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* Significant movement alarm */
+.alert-banner {
+  background: linear-gradient(90deg, #7B1A14 0%, #C0392B 55%, #A93226 100%);
+  border: 1px solid #FF6B5E;
+  border-left: 6px solid #FFEB3B;
+  border-radius: 12px;
+  padding: 0.95rem 1.2rem;
+  margin: 0 0 1rem 0;
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.35);
+  animation: alertPulse 2.4s ease-in-out infinite;
+}
+@keyframes alertPulse {
+  0%, 100% { box-shadow: 0 6px 20px rgba(192, 57, 43, 0.35); }
+  50% { box-shadow: 0 6px 28px rgba(255, 107, 94, 0.55); }
+}
+.alert-banner-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.25rem;
+}
+.alert-banner-sub {
+  font-size: 0.86rem;
+  opacity: 0.92;
+  margin-bottom: 0.55rem;
+}
+.alert-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.alert-chip {
+  display: inline-block;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #FFEBEE;
+  border-radius: 999px;
+  padding: 0.22rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.category-alert-tag {
+  background: rgba(192, 57, 43, 0.18);
+  border: 1px solid #C0392B;
+  color: #FFCDD2;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.sidebar-alert {
+  background: rgba(192, 57, 43, 0.2);
+  border: 1px solid #C0392B;
+  color: #FFCDD2;
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 0.45rem;
+}
+
+/* KPI cards */
+.kpi-card {
+  border-radius: 12px;
+  padding: 0.95rem 1.05rem;
+  background: linear-gradient(180deg, rgba(46,134,171,0.12), rgba(27,79,114,0.06));
+  border: 1px solid rgba(46,134,171,0.28);
+  margin-bottom: 0.4rem;
+}
+.kpi-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+  font-weight: 600;
+}
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-top: 0.15rem;
+  color: #2E86AB;
+}
+.kpi-delta {
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  opacity: 0.85;
+}
+
+/* Section labels */
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.7;
+  margin: 0.4rem 0 0.6rem 0;
+}
+
+/* Footer */
+.ascent-footer {
+  margin-top: 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(128,128,128,0.25);
+  font-size: 0.78rem;
+  opacity: 0.75;
+  text-align: center;
+}
+
+/* Tighten metric spacing */
+div[data-testid="stMetric"] {
+  background: rgba(46,134,171,0.08);
+  border: 1px solid rgba(46,134,171,0.22);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+}
+
+/* Sidebar polish — always scrollable drawer */
+section[data-testid="stSidebar"] {
+  border-right: 1px solid rgba(128,128,128,0.15);
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  max-height: 100vh;
+  max-height: 100dvh;
+}
+section[data-testid="stSidebar"] > div {
+  height: 100%;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+section[data-testid="stSidebar"] .block-container {
+  padding-top: 1.2rem;
+  padding-bottom: 2.5rem !important;
+}
+.sidebar-scroll-hint {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  margin: 0 0 0.55rem 0;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(46, 134, 171, 0.12);
+  border: 1px solid rgba(46, 134, 171, 0.28);
+  line-height: 1.3;
+}
+.chart-title-ext {
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0.35rem 0 0.15rem 0;
+  padding: 0 0.1rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.mobile-nav-tip {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(46, 134, 171, 0.14);
+  border: 1px solid rgba(46, 134, 171, 0.35);
+}
+
+/* Update base-forecast control — high visibility in sidebar */
+.sidebar-update-zone {
+  background: linear-gradient(135deg, rgba(46, 134, 171, 0.22), rgba(27, 79, 114, 0.14));
+  border: 1px solid rgba(46, 134, 171, 0.55);
+  border-left: 4px solid #2E86AB;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem 0.55rem 0.75rem;
+  margin: 0.15rem 0 0.55rem 0;
+  box-shadow: 0 2px 10px rgba(46, 134, 171, 0.18);
+}
+.sidebar-update-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.2rem 0;
+  color: #2E86AB;
+}
+.sidebar-update-hint {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin: 0;
+  line-height: 1.3;
+}
+/* Make the Update button stand out (primary, full-width in sidebar) */
+section[data-testid="stSidebar"] button[kind="primary"] {
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  min-height: 2.55rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 3px 12px rgba(46, 134, 171, 0.35) !important;
+}
+
+/* Tabs */
+button[data-baseweb="tab"] {
+  font-weight: 600;
+}
+
+/* Dataframe */
+div[data-testid="stDataFrame"] {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Responsive layout — phones & small tablets (Android / iPhone)
+   ========================================================================== */
+
+/* Hide zero-height component iframes (PWA meta injector) */
+iframe[height="0"],
+iframe[height="0px"] {
+  display: none !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Base: prevent horizontal page scroll from wide widgets */
+html, body, .stApp {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+[data-testid="stAppViewContainer"],
+[data-testid="stAppViewBlockContainer"],
+.block-container,
+section.main {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Plotly charts: always fill available width, never spill */
+div[data-testid="stPlotlyChart"],
+.stPlotlyChart,
+.js-plotly-plot,
+.plotly,
+.plot-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.js-plotly-plot .plotly,
+.js-plotly-plot .svg-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Tables / dataframes scroll horizontally instead of crushing layout */
+div[data-testid="stDataFrame"] {
+  max-width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+div[data-testid="stDataFrame"] [data-testid="stDataFrameResizable"] {
+  min-width: 0 !important;
+}
+
+/* Tabs: scroll rather than wrap into a jumbled stack */
+div[data-baseweb="tab-list"],
+[data-testid="stTabs"] [role="tablist"] {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  gap: 0.15rem;
+  scrollbar-width: thin;
+}
+button[data-baseweb="tab"],
+[data-testid="stTabs"] button[role="tab"] {
+  white-space: nowrap !important;
+  flex-shrink: 0;
+}
+
+/* Soften hero min-width so it can shrink on narrow phones */
+.ascent-hero-left {
+  min-width: 0;
+}
+.ascent-hero-right {
+  min-width: 0;
+}
+
+/* ---------- Tablet (≤ 992px) ---------- */
+@media (max-width: 992px) {
+  .block-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 1.1rem !important;
+  }
+  .ascent-hero {
+    padding: 0.95rem 1.1rem;
+  }
+  .ascent-hero h1 {
+    font-size: 1.3rem;
+  }
+  .ascent-logo {
+    height: 60px;
+    max-width: 150px;
+  }
+  /* Metrics: allow 2-across when 5-column rows collapse */
+  div[data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap !important;
+    gap: 0.45rem 0.5rem !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    min-width: min(100%, 140px) !important;
+    flex: 1 1 calc(33.33% - 0.5rem) !important;
+  }
+}
+
+/* ---------- Phone (≤ 768px) ---------- */
+@media (max-width: 768px) {
+  .block-container {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Header / hamburger — keep controls tappable above content */
+  [data-testid="stHeader"] {
+    background: transparent !important;
+  }
+  [data-testid="stToolbar"] {
+    z-index: 1000 !important;
+  }
+  /* Larger hit target for the sidebar collapse / expand control */
+  [data-testid="stSidebarCollapsedControl"],
+  [data-testid="collapsedControl"],
+  button[kind="header"] {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .ascent-hero {
+    padding: 0.85rem 0.9rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+  }
+  .ascent-hero-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+  .ascent-hero-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .ascent-logo {
+    height: 48px;
+    max-width: 130px;
+    padding: 0.3rem 0.4rem;
+  }
+  .ascent-logo-fallback {
+    height: 44px;
+    min-width: 44px;
+    font-size: 1.1rem;
+  }
+  .ascent-hero h1 {
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+  .ascent-hero .subtitle {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+  .ascent-hero .meta {
+    gap: 0.35rem;
+  }
+  .ascent-badge {
+    font-size: 0.68rem;
+    padding: 0.15rem 0.55rem;
+    max-width: 100%;
+    word-break: break-word;
+  }
+  .ascent-hero-right {
+    text-align: left;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Alert banner — full width, wraps chips cleanly */
+  .alert-banner {
+    padding: 0.75rem 0.85rem;
+    border-radius: 10px;
+    border-left-width: 5px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .alert-banner-title {
+    font-size: 0.98rem;
+    line-height: 1.25;
+  }
+  .alert-banner-sub {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+  .alert-chip {
+    font-size: 0.7rem;
+    padding: 0.18rem 0.55rem;
+  }
+  .alert-chip-row {
+    gap: 0.35rem;
+  }
+
+  /* Columns: vertical stack on phones (charts + metrics full width) */
+  div[data-testid="stHorizontalBlock"] {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+  div[data-testid="stMetric"] {
+    padding: 0.55rem 0.65rem !important;
+    margin-bottom: 0.15rem;
+  }
+  div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    font-size: 1.1rem !important;
+    word-break: break-word;
+  }
+  div[data-testid="stMetric"] [data-testid="stMetricLabel"] {
+    font-size: 0.7rem !important;
+  }
+
+  /* Charts: full width, no overflow, room for external titles */
+  div[data-testid="stPlotlyChart"] {
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    margin-bottom: 0.35rem;
+  }
+  div[data-testid="stPlotlyChart"] > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .js-plotly-plot .main-svg,
+  .js-plotly-plot .svg-container {
+    max-width: 100% !important;
+  }
+  .chart-title-ext {
+    font-size: 0.88rem;
+    margin: 0.55rem 0 0.1rem 0;
+  }
+
+  /* Sidebar drawer: full-ish width, easy scroll, sticky feel */
+  section[data-testid="stSidebar"] {
+    min-width: min(100vw - 2rem, 22rem) !important;
+    width: min(100vw - 2rem, 22rem) !important;
+    z-index: 1000001 !important;
+  }
+  section[data-testid="stSidebar"][aria-expanded="false"] {
+    /* Streamlit collapses off-canvas — leave default */
+  }
+  section[data-testid="stSidebar"] .block-container {
+    padding-top: 0.75rem;
+    padding-left: 0.7rem !important;
+    padding-right: 0.7rem !important;
+    padding-bottom: 3rem !important;
+  }
+  section[data-testid="stSidebar"] button,
+  section[data-testid="stSidebar"] .stDownloadButton > button {
+    min-height: 44px !important;
+    font-size: 0.95rem !important;
+  }
+  section[data-testid="stSidebar"] [data-baseweb="slider"] {
+    padding-top: 0.4rem;
+    padding-bottom: 0.45rem;
+  }
+  section[data-testid="stSidebar"] label,
+  section[data-testid="stSidebar"] .stSelectbox label {
+    font-size: 0.9rem !important;
+  }
+  section[data-testid="stSidebar"] [data-testid="stExpander"] {
+    margin-bottom: 0.4rem;
+  }
+  .sidebar-update-zone {
+    padding: 0.7rem 0.8rem;
+  }
+  .sidebar-update-title {
+    font-size: 0.88rem;
+  }
+
+  /* Main action buttons */
+  .stButton > button,
+  .stDownloadButton > button {
+    min-height: 44px !important;
+  }
+
+  /* Tabs labels a bit tighter + scrollable */
+  button[data-baseweb="tab"] {
+    font-size: 0.8rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    margin: 0.25rem 0 0.45rem 0;
+  }
+
+  .ascent-footer {
+    font-size: 0.7rem;
+    padding: 0.6rem 0.4rem 0.2rem;
+  }
+
+  /* Expanders / alerts full width */
+  [data-testid="stExpander"],
+  [data-testid="stAlert"] {
+    max-width: 100%;
+  }
+
+  /* File uploader easier to hit */
+  [data-testid="stFileUploader"] section {
+    padding: 0.75rem !important;
+  }
+
+  /* Images never overflow */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* ---------- Small phones (≤ 400px) ---------- */
+@media (max-width: 400px) {
+  .ascent-hero h1 {
+    font-size: 1.02rem;
+  }
+  .ascent-logo {
+    height: 42px;
+    max-width: 110px;
+  }
+  /* Force every column full-width — pure vertical stack */
+  div[data-testid="stHorizontalBlock"] {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+  div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    font-size: 1.2rem !important;
+  }
+  button[data-baseweb="tab"] {
+    font-size: 0.75rem !important;
+  }
+  .chart-title-ext {
+    font-size: 0.84rem;
+  }
+}
+
+
+
+/* Safe area for notched phones (iPhone X+) */
+@supports (padding: max(0px)) {
+  .block-container {
+    padding-left: max(0.65rem, env(safe-area-inset-left)) !important;
+    padding-right: max(0.65rem, env(safe-area-inset-right)) !important;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+  }
+  section[data-testid="stSidebar"] .block-container {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+  }
+}
