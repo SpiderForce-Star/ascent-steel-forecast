@@ -1,28 +1,21 @@
 # Install Ascent Steel Forecast on your desktop
 
-## Why Edge showed its logo
+## Instant install (Windows)
 
-Edge **Create shortcut** always uses the **browser** icon. It ignores your site favicon.
+1. **Download** [Ascent-Steel-Desktop-Installer.zip](https://github.com/SpiderForce-Star/ascent-steel-forecast/raw/main/desktop/Ascent-Steel-Desktop-Installer.zip)
+2. In Downloads, **right-click the zip → Extract All → Extract**  
+   (Do not run files from inside the zip window.)
+3. Open the **extracted folder**.
+4. Double-click **`Install-Ascent-Steel-Desktop.vbs`**
+5. Click OK — desktop gets **Ascent US Steel Forecast** with the **steel I-beam** icon, and the app opens.
 
-## Instant install (Windows) — 10 seconds
-
-1. Unzip this folder (if needed).
-2. Double-click **`Install-Ascent-Steel-Desktop.vbs`**  
-   (or **`Install-Ascent-Steel-Desktop.bat`** if you prefer).
-3. Click OK on the confirmation.
-4. Desktop now has **Ascent US Steel Forecast** with the **steel I-beam** icon.
-5. Double-click that shortcut anytime.
-
-Keep `Ascent-Steel-Forecast.ico` in the **same folder** as the installer.
+The installer will download the I-beam icon from GitHub if needed.
 
 ## Phone
 
-- **iPhone:** Safari → Share → Add to Home Screen  
-- **Android:** Chrome → menu → Add to Home screen / Install app  
+- iPhone: Safari → Share → Add to Home Screen  
+- Android: Chrome → menu → Install app / Add to Home screen  
 
-## Manual fallback
+## App URL
 
-1. Desktop → New → Shortcut → paste:  
-   `https://ascent-steel-forecast-cnz5m3zmygunxam6xrnubz.streamlit.app/`
-2. Name: `Ascent US Steel Forecast`
-3. Right-click → Properties → **Change Icon** → browse to `Ascent-Steel-Forecast.ico`
+https://ascent-steel-forecast-cnz5m3zmygunxam6xrnubz.streamlit.app/
