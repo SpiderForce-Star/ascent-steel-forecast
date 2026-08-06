@@ -1,15 +1,15 @@
-# Ascent app icons
+# App icons — Ascent Steel Forecast
 
-Generated from `assets/ascent-logo.png` for browser favicon and PWA / home-screen install.
+Steel I-beam branding for browser tabs, PWA install, and mobile home screens.
 
 | File | Size | Use |
 |------|------|-----|
 | `favicon-16.png` | 16×16 | Browser tab (small) |
-| `favicon-32.png` | 32×32 | Browser tab / Streamlit `page_icon` |
-| `favicon-48.png` | 48×48 | Desktop shortcuts |
-| `favicon.png` | 32×32 | Generic favicon alias |
+| `favicon-32.png` / `favicon.png` | 32×32 | Browser tab / default favicon |
+| `favicon-48.png` | 48×48 | Windows / high-DPI tab |
 | `apple-touch-icon.png` | 180×180 | iOS home screen |
 | `icon-192.png` | 192×192 | Android / PWA |
-| `icon-512.png` | 512×512 | Android / PWA splash & store |
+| `icon-512.png` | 512×512 | Android splash / maskable PWA |
 
-Icons use Ascent navy (`#0F2C44`) padding with a white plate behind the logo for readability on home screens.
+Subject: brushed structural steel I-beam on deep navy (`#0B1C2C` / `#0F2C44`).
+Loaded by `app.py` (`inject_pwa_and_icons` / `_resolve_page_icon`).
