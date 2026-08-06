@@ -63,8 +63,11 @@ ALERT_THRESHOLD = 0.03  # ±3% Base vs Adjusted
 
 # Favicon / tab icon — Ascent logo (generated icons preferred)
 def _resolve_page_icon() -> str:
+    """Prefer the steel I-beam set (tab + Streamlit chrome)."""
     for p in (
+        ICONS / "icon-192.png",
         ICONS / "favicon-32.png",
+        ICONS / "favicon.ico",
         ICONS / "apple-touch-icon.png",
         ICONS / "favicon.png",
         *LOGO_CANDIDATES,
@@ -173,13 +176,23 @@ def inject_pwa_and_icons() -> None:
     """
     Inject favicon, Apple touch icon, theme-color, and a web app manifest so the
     app looks branded in the browser tab and when added to an Android/iPhone home screen.
+
+    Note: Edge/Chrome "Create shortcut" still uses the *browser* icon. For a true
+    steel I-beam desktop icon on Windows, use the installer under /desktop or the
+    sidebar download (see render_desktop_install).
     """
+    fav16 = _icon_b64("favicon-16.png")
     fav32 = _icon_b64("favicon-32.png")
+    fav48 = _icon_b64("favicon-48.png")
     apple = _icon_b64("apple-touch-icon.png")
     i192 = _icon_b64("icon-192.png")
+    i256 = _icon_b64("icon-256.png") or i192
     i512 = _icon_b64("icon-512.png")
     if not fav32:
         return
+
+    # Prefer largest I-beam for primary icon so tab + install pick the beam, not logo
+    primary = i192 or fav32
 
     manifest = {
         "name": "Ascent | US Steel Cost Forecast",
@@ -192,10 +205,16 @@ def inject_pwa_and_icons() -> None:
         "scope": ".",
         "display": "standalone",
         "orientation": "any",
-        "background_color": "#0E1621",
+        "background_color": "#0B1C2C",
         "theme_color": "#0F2C44",
         "categories": ["business", "finance", "productivity"],
         "icons": [
+            {
+                "src": f"data:image/png;base64,{fav48 or fav32}",
+                "sizes": "48x48",
+                "type": "image/png",
+                "purpose": "any",
+            },
             {
                 "src": f"data:image/png;base64,{i192}",
                 "sizes": "192x192",
@@ -224,25 +243,30 @@ def inject_pwa_and_icons() -> None:
     }
     manifest_js = json.dumps(manifest)
 
-    # Streamlit strips <script> from markdown — inject into parent document head
+    # Streamlit strips <script> from markdown — inject into parent document head.
+    # Remove prior Streamlit default favicons so the I-beam wins.
     components.html(
         f"""
         <script>
         (function () {{
           const doc = window.parent.document;
-          function upsertLink(rel, href, attrs) {{
-            let el = doc.querySelector('link[rel="' + rel + '"]');
-            if (!el) {{
-              el = doc.createElement('link');
-              el.setAttribute('rel', rel);
-              doc.head.appendChild(el);
-            }}
+          function removeOldIcons() {{
+            doc.querySelectorAll(
+              'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"], link[rel="apple-touch-icon-precomposed"]'
+            ).forEach(function (el) {{
+              el.parentNode && el.parentNode.removeChild(el);
+            }});
+          }}
+          function addLink(rel, href, attrs) {{
+            const el = doc.createElement('link');
+            el.setAttribute('rel', rel);
             el.setAttribute('href', href);
             if (attrs) {{
               Object.keys(attrs).forEach(function (k) {{
                 el.setAttribute(k, attrs[k]);
               }});
             }}
+            doc.head.appendChild(el);
           }}
           function upsertMeta(name, content) {{
             let el = doc.querySelector('meta[name="' + name + '"]');
@@ -253,7 +277,6 @@ def inject_pwa_and_icons() -> None:
             }}
             el.setAttribute('content', content);
           }}
-          /* Ensure mobile viewport scales correctly */
           let vp = doc.querySelector('meta[name="viewport"]');
           if (!vp) {{
             vp = doc.createElement('meta');
@@ -265,19 +288,24 @@ def inject_pwa_and_icons() -> None:
             'width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover'
           );
 
-          upsertLink('icon', 'data:image/png;base64,{fav32}', {{
-            type: 'image/png',
-            sizes: '32x32'
-          }});
-          upsertLink('shortcut icon', 'data:image/png;base64,{fav32}', {{
-            type: 'image/png'
-          }});
-          upsertLink('apple-touch-icon', 'data:image/png;base64,{apple}', {{
-            sizes: '180x180'
-          }});
+          removeOldIcons();
+
+          if ('{fav16}') {{
+            addLink('icon', 'data:image/png;base64,{fav16}', {{ type: 'image/png', sizes: '16x16' }});
+          }}
+          addLink('icon', 'data:image/png;base64,{fav32}', {{ type: 'image/png', sizes: '32x32' }});
+          if ('{fav48}') {{
+            addLink('icon', 'data:image/png;base64,{fav48}', {{ type: 'image/png', sizes: '48x48' }});
+          }}
+          addLink('icon', 'data:image/png;base64,{primary}', {{ type: 'image/png', sizes: '192x192' }});
+          addLink('shortcut icon', 'data:image/png;base64,{fav32}', {{ type: 'image/png' }});
+          addLink('apple-touch-icon', 'data:image/png;base64,{apple}', {{ sizes: '180x180' }});
 
           upsertMeta('theme-color', '#0F2C44');
           upsertMeta('msapplication-TileColor', '#0F2C44');
+          if ('{i256}') {{
+            upsertMeta('msapplication-TileImage', 'data:image/png;base64,{i256}');
+          }}
           upsertMeta('apple-mobile-web-app-capable', 'yes');
           upsertMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
           upsertMeta('apple-mobile-web-app-title', 'Ascent Steel');
@@ -287,13 +315,97 @@ def inject_pwa_and_icons() -> None:
           const manifest = {manifest_js};
           const blob = new Blob([JSON.stringify(manifest)], {{ type: 'application/json' }});
           const url = URL.createObjectURL(blob);
-          upsertLink('manifest', url);
+          const oldMan = doc.querySelector('link[rel="manifest"]');
+          if (oldMan) oldMan.parentNode.removeChild(oldMan);
+          addLink('manifest', url);
+
+          // Re-assert after Streamlit re-renders head (it often resets favicon)
+          setTimeout(function () {{
+            const hasBeam = Array.from(doc.querySelectorAll('link[rel="icon"]')).some(function (l) {{
+              return (l.getAttribute('href') || '').indexOf('data:image/png') === 0;
+            }});
+            if (!hasBeam) {{
+              removeOldIcons();
+              addLink('icon', 'data:image/png;base64,{primary}', {{ type: 'image/png', sizes: '192x192' }});
+              addLink('apple-touch-icon', 'data:image/png;base64,{apple}', {{ sizes: '180x180' }});
+            }}
+          }}, 800);
         }})();
         </script>
         """,
         height=0,
         width=0,
     )
+
+
+def render_desktop_install() -> None:
+    """Sidebar: download I-beam icon + Windows installer for a real desktop icon."""
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### Install (I-beam icon)")
+    st.sidebar.caption(
+        "Edge **Create shortcut** always shows the Edge logo. "
+        "Use these downloads for a steel I-beam icon on your desktop or phone."
+    )
+
+    ico_path = ICONS / "Ascent-Steel-Forecast.ico"
+    if not ico_path.exists():
+        ico_path = ICONS / "favicon.ico"
+    png_path = ICONS / "icon-256.png"
+    if not png_path.exists():
+        png_path = ICONS / "icon-192.png"
+    ps1_path = ROOT / "desktop" / "Install-Ascent-Steel-Desktop.ps1"
+    bat_path = ROOT / "desktop" / "Install-Ascent-Steel-Desktop.bat"
+
+    if ico_path.exists():
+        st.sidebar.download_button(
+            label="Download Windows icon (.ico)",
+            data=ico_path.read_bytes(),
+            file_name="Ascent-Steel-Forecast.ico",
+            mime="image/x-icon",
+            use_container_width=True,
+            key="dl_ico",
+        )
+    if png_path.exists():
+        st.sidebar.download_button(
+            label="Download icon PNG (256px)",
+            data=png_path.read_bytes(),
+            file_name="Ascent-Steel-Forecast.png",
+            mime="image/png",
+            use_container_width=True,
+            key="dl_png",
+        )
+    if bat_path.exists() and ps1_path.exists():
+        # Zip the installer set for one-click desktop setup
+        import io
+        import zipfile
+
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.write(bat_path, "Install-Ascent-Steel-Desktop.bat")
+            zf.write(ps1_path, "Install-Ascent-Steel-Desktop.ps1")
+            if ico_path.exists():
+                zf.write(ico_path, "Ascent-Steel-Forecast.ico")
+            readme = ROOT / "desktop" / "README.md"
+            if readme.exists():
+                zf.write(readme, "README.md")
+        st.sidebar.download_button(
+            label="Download desktop installer (zip)",
+            data=buf.getvalue(),
+            file_name="Ascent-Steel-Desktop-Installer.zip",
+            mime="application/zip",
+            use_container_width=True,
+            key="dl_zip",
+            type="primary",
+        )
+        st.sidebar.caption(
+            "Windows: unzip → double-click **Install-Ascent-Steel-Desktop.bat**. "
+            "Phone: open this site in Safari/Chrome → Share → **Add to Home Screen**."
+        )
+    else:
+        st.sidebar.caption(
+            "Phone: Share → **Add to Home Screen**. "
+            "Windows: download the .ico → shortcut Properties → Change Icon."
+        )
 
 
 def is_mobile_layout() -> bool:
